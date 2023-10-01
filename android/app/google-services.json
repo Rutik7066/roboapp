@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "584107860889",
+    "project_id": "itra-robo",
+    "storage_bucket": "itra-robo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584107860889:android:13a0071c82cffd7b776908",
+        "android_client_info": {
+          "package_name": "org.itraindia.roboapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584107860889-3d7bm8vb1g0ogudmo9rf6qusbamsasuq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEFSghFrl8Jo_RBun6Fx4uHl_FEoIsn6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584107860889-3d7bm8vb1g0ogudmo9rf6qusbamsasuq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "584107860889-pm73hplb88nrvj66n0dmbomech8n7snk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.itrarobo"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584107860889:android:259442e8f84b06c8776908",
+        "android_client_info": {
+          "package_name": "org.itraindia.roboapp.roboapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584107860889-3d7bm8vb1g0ogudmo9rf6qusbamsasuq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEFSghFrl8Jo_RBun6Fx4uHl_FEoIsn6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584107860889-3d7bm8vb1g0ogudmo9rf6qusbamsasuq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "584107860889-pm73hplb88nrvj66n0dmbomech8n7snk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.itrarobo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

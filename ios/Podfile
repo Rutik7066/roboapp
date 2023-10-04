@@ -32,14 +32,7 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  post_install do |installer|
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['ENABLE_BITCODE'] = 'YES'
-      end
-    end
-  end
-  
+ 
   target 'RunnerTests' do
     inherit! :search_paths
   end

@@ -1165,6 +1165,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  tapioca:
+    dependency: "direct main"
+    description:
+      name: tapioca
+      sha256: a84a2305fdcba3ed9cedb7fd16211a8300a2722718b242d77c06a3aea671bc90
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.6+1"
   term_glyph:
     dependency: transitive
     description:

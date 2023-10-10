@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:developer';
 import 'package:android_path_provider/android_path_provider.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_session.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:roboapp/const.dart';
@@ -41,5 +43,8 @@ Future<bool> increaseDailyCount() async {
     return false;
   } else {
     return true;
-  }
-}
+  }}
+
+
+String getCommand(String inputVideoPath, overlayImagePath, outputVideoPath) =>
+    '-i $inputVideoPath -i $overlayImagePath -filter_complex  [0:v]scale=1500:1500[base];[1:v]scale=1500:1500[overlay];[base][overlay]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2 -c:a copy $outputVideoPath';

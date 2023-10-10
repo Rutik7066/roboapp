@@ -1,8 +1,10 @@
+import 'package:ffmpeg_kit_flutter/return_code.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:roboapp/component/edit/custom_edit/component/custom_image_file.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 
 import 'package:video_player/video_player.dart';
 import 'package:roboapp/const.dart';
@@ -35,7 +37,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:roboapp/cache_confige.dart';
 import 'package:file_picker/file_picker.dart';
 
-
 final selectedFontProvider = StateProvider<String>((ref) {
   return "Hind-Regular";
 });
@@ -45,7 +46,8 @@ class CustomEdit extends StatefulWidget {
   final String file;
   final String type;
   final String? date;
-  const CustomEdit({super.key, this.date, required this.file, required this.type});
+  const CustomEdit(
+      {super.key, this.date, required this.file, required this.type});
 
   @override
   State<CustomEdit> createState() => _CustomEditState();
@@ -58,23 +60,63 @@ class _CustomEditState extends State<CustomEdit> {
   void dispose() {
     if (!(box.get("business_mobile").toString().compareTo('8855850979') == 0)) {
       ScreenProtector.protectDataLeakageOff();
-       ScreenProtector.preventScreenshotOff();
+      ScreenProtector.preventScreenshotOff();
     }
     videoPlayerController?.dispose();
     super.dispose();
   }
 
   List<Map<String, dynamic>> frameList = [
-    {"name": "frame_d01.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d01.png', width: 80, height: 80)},
-    {"name": "frame_d02.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d02.png', width: 80, height: 80)},
-    {"name": "frame_d03.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d03.png', width: 80, height: 80)},
-    {"name": "frame_d04.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d04.png', width: 80, height: 80)},
-    {"name": "frame_d08.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d08.png', width: 80, height: 80)},
-    {"name": "frame_d09.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d09.png', width: 80, height: 80)},
-    {"name": "frame_d10.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d10.png', width: 80, height: 80)},
-    {"name": "frame_d05.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d05.png', width: 80, height: 80)},
-    {"name": "frame_d06.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d06.png', width: 80, height: 80)},
-    {"name": "frame_d07.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d07.png', width: 80, height: 80)},
+    {
+      "name": "frame_d01.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d01.png', width: 80, height: 80)
+    },
+    {
+      "name": "frame_d02.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d02.png', width: 80, height: 80)
+    },
+    {
+      "name": "frame_d03.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d03.png', width: 80, height: 80)
+    },
+    {
+      "name": "frame_d04.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d04.png', width: 80, height: 80)
+    },
+    {
+      "name": "frame_d08.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d08.png', width: 80, height: 80)
+    },
+    {
+      "name": "frame_d09.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d09.png', width: 80, height: 80)
+    },
+    {
+      "name": "frame_d10.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d10.png', width: 80, height: 80)
+    },
+    {
+      "name": "frame_d05.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d05.png', width: 80, height: 80)
+    },
+    {
+      "name": "frame_d06.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d06.png', width: 80, height: 80)
+    },
+    {
+      "name": "frame_d07.png",
+      "watermark": true,
+      "widget": Image.asset('assets/frame/frame_d07.png', width: 80, height: 80)
+    },
   ];
   List<Map<String, dynamic>> extraFrame = [];
 
@@ -113,7 +155,8 @@ class _CustomEditState extends State<CustomEdit> {
   @override
   void initState() {
     super.initState();
-print("conpairing ${!(box.get("business_mobile").toString().compareTo('8855850979') == 0)}");
+    print(
+        "conpairing ${!(box.get("business_mobile").toString().compareTo('8855850979') == 0)}");
     if (!(box.get("business_mobile").toString().compareTo('8855850979') == 0)) {
       ScreenProtector.protectDataLeakageOn();
       ScreenProtector.preventScreenshotOn();
@@ -134,34 +177,95 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
         .then((value) {
       Map<String, dynamic> data = json.decode(value.body);
       dev.log(data.toString());
-      bool watermark = data['watermark'].toString().compareTo("No") == 0 ? false : true;
+      bool watermark =
+          data['watermark'].toString().compareTo("No") == 0 ? false : true;
 
       for (var element in data['frames']) {
         frameList.add(
-          {"name": element["frame"], "watermark": watermark, "widget": CachedNetworkImage(fadeInDuration: Duration.zero, cacheManager: eventCacheManager, imageUrl: "https://robo.itraindia.org/server/frame/${element['frame']}.png", width: 80, height: 80)},
+          {
+            "name": element["frame"],
+            "watermark": watermark,
+            "widget": CachedNetworkImage(
+                fadeInDuration: Duration.zero,
+                cacheManager: eventCacheManager,
+                imageUrl:
+                    "https://robo.itraindia.org/server/frame/${element['frame']}.png",
+                width: 80,
+                height: 80)
+          },
         );
         extraFrame.add(
-          {"name": element["frame"], "watermark": watermark, "widget": CachedNetworkImage(fadeInDuration: Duration.zero, cacheManager: eventCacheManager, imageUrl: "https://robo.itraindia.org/server/frame/${element['frame']}.png", width: 80, height: 80)},
+          {
+            "name": element["frame"],
+            "watermark": watermark,
+            "widget": CachedNetworkImage(
+                fadeInDuration: Duration.zero,
+                cacheManager: eventCacheManager,
+                imageUrl:
+                    "https://robo.itraindia.org/server/frame/${element['frame']}.png",
+                width: 80,
+                height: 80)
+          },
         );
         selectedFrame = element["frame"];
       }
       setState(() {});
     });
-    
   }
 
-  Widget returnFrame(Map<String, dynamic> data, List<Map<String, dynamic>> extraFrame, String selected) {
+  Widget returnFrame(Map<String, dynamic> data,
+      List<Map<String, dynamic>> extraFrame, String selected) {
     List list = [
-      {"name": "frame_d01.png", "watermark": true, "widget": Frame01(data: data)},
-      {"name": "frame_d02.png", "watermark": true, "widget": Frame02(data: data)},
-      {"name": "frame_d03.png", "watermark": true, "widget": Frame03(data: data)},
-      {"name": "frame_d04.png", "watermark": true, "widget": Frame04(data: data)},
-      {"name": "frame_d08.png", "watermark": true, "widget": Frame08(data: data)},
-      {"name": "frame_d09.png", "watermark": true, "widget": Frame09(data: data)},
-      {"name": "frame_d10.png", "watermark": true, "widget": Frame10(data: data)},
-      {"name": "frame_d05.png", "watermark": true, "widget": Frame05(data: data)},
-      {"name": "frame_d06.png", "watermark": true, "widget": Frame06(data: data)},
-      {"name": "frame_d07.png", "watermark": true, "widget": Frame07(data: data)},
+      {
+        "name": "frame_d01.png",
+        "watermark": true,
+        "widget": Frame01(data: data)
+      },
+      {
+        "name": "frame_d02.png",
+        "watermark": true,
+        "widget": Frame02(data: data)
+      },
+      {
+        "name": "frame_d03.png",
+        "watermark": true,
+        "widget": Frame03(data: data)
+      },
+      {
+        "name": "frame_d04.png",
+        "watermark": true,
+        "widget": Frame04(data: data)
+      },
+      {
+        "name": "frame_d08.png",
+        "watermark": true,
+        "widget": Frame08(data: data)
+      },
+      {
+        "name": "frame_d09.png",
+        "watermark": true,
+        "widget": Frame09(data: data)
+      },
+      {
+        "name": "frame_d10.png",
+        "watermark": true,
+        "widget": Frame10(data: data)
+      },
+      {
+        "name": "frame_d05.png",
+        "watermark": true,
+        "widget": Frame05(data: data)
+      },
+      {
+        "name": "frame_d06.png",
+        "watermark": true,
+        "widget": Frame06(data: data)
+      },
+      {
+        "name": "frame_d07.png",
+        "watermark": true,
+        "widget": Frame07(data: data)
+      },
       ...extraFrame
     ];
     return list.firstWhere((element) => element["name"] == selected)['widget'];
@@ -185,7 +289,8 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
               fit: StackFit.expand,
               children: [
                 if (widget.type.contains('video'))
-                  if (videoPlayerController!.value.isInitialized) VideoPlayer(videoPlayerController!),
+                  if (videoPlayerController!.value.isInitialized)
+                    VideoPlayer(videoPlayerController!),
                 RepaintBoundary(
                   key: _globalKey,
                   child: SizedBox(
@@ -210,11 +315,16 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
                         Consumer(
                           builder: (context, ref, child) {
                             Map<String, dynamic> busData = {
-                              "businessname": box.get("business_name", defaultValue: ""),
-                              "mobile": box.get("business_mobile", defaultValue: ""),
-                              "email": box.get("business_email", defaultValue: ""),
-                              "address": box.get("business_address", defaultValue: ""),
-                              "businessdetails": box.get("business_details", defaultValue: ""),
+                              "businessname":
+                                  box.get("business_name", defaultValue: ""),
+                              "mobile":
+                                  box.get("business_mobile", defaultValue: ""),
+                              "email":
+                                  box.get("business_email", defaultValue: ""),
+                              "address":
+                                  box.get("business_address", defaultValue: ""),
+                              "businessdetails":
+                                  box.get("business_details", defaultValue: ""),
                               "textstyle": ref.watch(selectedFontProvider),
                               "show_frame": true,
                             };
@@ -223,7 +333,8 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
                               left: 0,
                               right: 0,
                               top: 0,
-                              child: returnFrame(busData, extraFrame, selectedFrame),
+                              child: returnFrame(
+                                  busData, extraFrame, selectedFrame),
                             );
                           },
                         ),
@@ -241,7 +352,8 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
                                   _left += details.focalPointDelta.dx;
                                   _top += details.focalPointDelta.dy;
                                 });
-                                dev.log("scale : $_scale, left : $_left, top : $_top");
+                                dev.log(
+                                    "scale : $_scale, left : $_left, top : $_top");
                               },
                               child: Transform.scale(
                                 scale: _scale,
@@ -313,14 +425,17 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
                     shouldShowLogo = !shouldShowLogo;
                     setState(() {});
                   },
-                  icon: Icon(Ionicons.image_outline, color: Colors.deepPurple.shade600),
+                  icon: Icon(Ionicons.image_outline,
+                      color: Colors.deepPurple.shade600),
                   constraints: const BoxConstraints.tightFor(
                     width: 48.0,
                     height: 48.0,
                   ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.deepPurple.shade50),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8))),
                   ),
                 ),
                 const Text(
@@ -335,21 +450,32 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
                   builder: (context, ref, child) {
                     return IconButton(
                       onPressed: () async {
-                        FilePickerResult? res = await FilePicker.platform.pickFiles(type: FileType.image);
+                        FilePickerResult? res = await FilePicker.platform
+                            .pickFiles(type: FileType.image);
                         if (res != null) {
-                          ref.read(selectedImagesCustom.notifier).state.add(res.files[0].path!);
-                          dev.log(ref.read(selectedImagesCustom.notifier).state.toSet().toString());
+                          ref
+                              .read(selectedImagesCustom.notifier)
+                              .state
+                              .add(res.files[0].path!);
+                          dev.log(ref
+                              .read(selectedImagesCustom.notifier)
+                              .state
+                              .toSet()
+                              .toString());
                           setState(() {});
                         }
                       },
-                      icon: Icon(Ionicons.image_outline, color: Colors.deepPurple.shade600),
+                      icon: Icon(Ionicons.image_outline,
+                          color: Colors.deepPurple.shade600),
                       constraints: const BoxConstraints.tightFor(
                         width: 48.0,
                         height: 48.0,
                       ),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                        backgroundColor: MaterialStateProperty.all(
+                            Colors.deepPurple.shade50),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8))),
                       ),
                     );
                   },
@@ -366,18 +492,22 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
                   onPressed: () async {
                     final t = await showDialog(
                       context: context,
-                      builder: (context) => FontSelection(fontFamilies: fontFamilies),
+                      builder: (context) =>
+                          FontSelection(fontFamilies: fontFamilies),
                     );
                     dev.log(t.toString());
                   },
-                  icon: Icon(Ionicons.text_outline, color: Colors.deepPurple.shade600),
+                  icon: Icon(Ionicons.text_outline,
+                      color: Colors.deepPurple.shade600),
                   constraints: const BoxConstraints.tightFor(
                     width: 48.0,
                     height: 48.0,
                   ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.deepPurple.shade50),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8))),
                   ),
                 ),
                 const Text(
@@ -398,14 +528,17 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
                       await saveImage();
                     }
                   },
-                  icon: Icon(Ionicons.cloud_download_outline, color: Colors.deepPurple.shade600),
+                  icon: Icon(Ionicons.cloud_download_outline,
+                      color: Colors.deepPurple.shade600),
                   constraints: const BoxConstraints.tightFor(
                     width: 48.0,
                     height: 48.0,
                   ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.deepPurple.shade50),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8))),
                   ),
                 ),
                 const Text(
@@ -423,7 +556,8 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
   Future<String?> saveImage() async {
     dev.log('Save Image');
     try {
-      RenderRepaintBoundary boundary = _globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary = _globalKey.currentContext
+          ?.findRenderObject() as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 10.0);
 
       if (mounted) {
@@ -435,14 +569,16 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
           text: 'Fetching your data',
         );
       }
-      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData == null) return null;
       Uint8List pngBytes = byteData.buffer.asUint8List();
-      String? directory = await getDownload();
+      String? directory =  (await getTemporaryDirectory()).path;
       if (directory == null) return null;
       File imgFile = File("$directory/itra_${DateTime.now().microsecond}.png");
       await imgFile.writeAsBytes(pngBytes);
-      var res = await ImageGallerySaver.saveImage(imgFile.readAsBytesSync(), quality: 60, name: "itra_${DateTime.now().microsecond}");
+      var res = await ImageGallerySaver.saveImage(imgFile.readAsBytesSync(),
+          quality: 60, name: "itra_${DateTime.now().microsecond}");
       dev.log("image cap ended");
       if (res['isSuccess'] == false && mounted) {
         Navigator.pop(context);
@@ -482,7 +618,8 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
   }
 
   Future<String?> getFrame() async {
-    RenderRepaintBoundary boundary = _globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+    RenderRepaintBoundary boundary =
+        _globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage(pixelRatio: 10.0);
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     if (byteData == null) return null;
@@ -531,24 +668,17 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
       }
       return;
     }
-
-    final request = http.MultipartRequest('POST', Uri.parse('http://13.200.79.156:3000/merge-video'));
-    request.headers.addAll({'Accept': '*/*', 'Content-Type': 'multipart/form-data'});
-    request.files.add(await http.MultipartFile.fromPath("image", frame, contentType: MediaType('image', 'png')));
-    request.files.add(await http.MultipartFile.fromPath('video', video, contentType: MediaType('video', 'mp4')));
-    try {
-      final streamedResponse = await request.send();
-      dev.log("request sent and responcse recieved");
-      if (streamedResponse.statusCode == 200) {
-        try {
-          final videoResponseBytes = await streamedResponse.stream.toBytes();
-          print(videoResponseBytes);
-          String path = "${(await getDownload())}/itra_${DateTime.now().microsecond}.mp4";
-          final file = File(path);
-          dev.log(path);
-          await file.writeAsBytes(videoResponseBytes);
-          var res = await GallerySaver.saveVideo(file.path);
-          if (mounted && res == false) {
+    if (Platform.isAndroid) {
+      try {
+        String path =
+            "${(await getDownload())}/itra_${DateTime.now().microsecond}.mp4";
+         File outPutFile= File(path);
+        final session =
+            await FFmpegKit.executeAsync(getCommand(video, frame, outPutFile.path));
+        final returnCode = await session.getReturnCode();
+        if (ReturnCode.isSuccess(returnCode)) {
+          var re = await GallerySaver.saveVideo(path);
+          if (mounted && re == false) {
             Navigator.pop(context);
             QuickAlert.show(
               barrierDismissible: false,
@@ -569,8 +699,7 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
             );
           }
           dev.log('done');
-        } on Exception catch (e) {
-          dev.log('Error saving video code: $e');
+        } else if (ReturnCode.isCancel(returnCode)) {
           if (mounted) {
             Navigator.pop(context);
             QuickAlert.show(
@@ -578,13 +707,12 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
               context: context,
               type: QuickAlertType.error,
               title: 'Oops...',
-              text: e.toString(),
+              text: 'Sorry, failed to save video.',
             );
+            return null;
           }
-        }
-      } else {
-        final videoResponseBytes = await streamedResponse.stream.bytesToString();
-        dev.log('Failed proccessing video from backend ${streamedResponse.statusCode} : $videoResponseBytes');
+        } 
+      } catch (e) {
         if (mounted) {
           Navigator.pop(context);
           QuickAlert.show(
@@ -592,21 +720,94 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
             context: context,
             type: QuickAlertType.error,
             title: 'Oops...',
-            text: videoResponseBytes,
+            text: e.toString(),
           );
         }
       }
-    } catch (e) {
-      dev.log('Error sending video: $e');
-      if (mounted) {
-        Navigator.pop(context);
-        QuickAlert.show(
-          barrierDismissible: false,
-          context: context,
-          type: QuickAlertType.error,
-          title: 'Oops...',
-          text: e.toString(),
-        );
+    } else {
+      final request = http.MultipartRequest(
+          'POST', Uri.parse('http://13.200.79.156:3000/merge-video'));
+      request.headers
+          .addAll({'Accept': '*/*', 'Content-Type': 'multipart/form-data'});
+      request.files.add(await http.MultipartFile.fromPath("image", frame,
+          contentType: MediaType('image', 'png')));
+      request.files.add(await http.MultipartFile.fromPath('video', video,
+          contentType: MediaType('video', 'mp4')));
+      try {
+        final streamedResponse = await request.send();
+        dev.log("request sent and responcse recieved");
+        if (streamedResponse.statusCode == 200) {
+          try {
+            final videoResponseBytes = await streamedResponse.stream.toBytes();
+            print(videoResponseBytes);
+            String path =
+                "${(await getDownload())}/itra_${DateTime.now().microsecond}.mp4";
+            final file = File(path);
+            dev.log(path);
+            await file.writeAsBytes(videoResponseBytes);
+            var res = await GallerySaver.saveVideo(file.path);
+            if (mounted && res == false) {
+              Navigator.pop(context);
+              QuickAlert.show(
+                barrierDismissible: false,
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Oops...',
+                text: 'Sorry, failed to save video in gallery',
+              );
+              return null;
+            }
+            if (mounted) {
+              Navigator.pop(context);
+              QuickAlert.show(
+                barrierDismissible: false,
+                context: context,
+                type: QuickAlertType.success,
+                text: 'Saved Successfully.',
+              );
+            }
+            dev.log('done');
+          } on Exception catch (e) {
+            dev.log('Error saving video code: $e');
+            if (mounted) {
+              Navigator.pop(context);
+              QuickAlert.show(
+                barrierDismissible: false,
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Oops...',
+                text: e.toString(),
+              );
+            }
+          }
+        } else {
+          final videoResponseBytes =
+              await streamedResponse.stream.bytesToString();
+          dev.log(
+              'Failed proccessing video from backend ${streamedResponse.statusCode} : $videoResponseBytes');
+          if (mounted) {
+            Navigator.pop(context);
+            QuickAlert.show(
+              barrierDismissible: false,
+              context: context,
+              type: QuickAlertType.error,
+              title: 'Oops...',
+              text: videoResponseBytes,
+            );
+          }
+        }
+      } catch (e) {
+        dev.log('Error sending video: $e');
+        if (mounted) {
+          Navigator.pop(context);
+          QuickAlert.show(
+            barrierDismissible: false,
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Oops...',
+            text: e.toString(),
+          );
+        }
       }
     }
   }
@@ -631,7 +832,8 @@ class _FontSelectionState extends State<FontSelection> {
             children: widget.fontFamilies
                 .map((fontFamily) => GestureDetector(
                       onTap: () {
-                        ref.read(selectedFontProvider.notifier).state = fontFamily;
+                        ref.read(selectedFontProvider.notifier).state =
+                            fontFamily;
                         Navigator.pop(context);
                       },
                       child: Padding(

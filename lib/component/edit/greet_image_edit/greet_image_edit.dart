@@ -9,6 +9,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:roboapp/component/edit/greet_image_edit/component/greet_text.dart';
 import 'package:roboapp/home/home.dart';
 import 'package:screen_protector/screen_protector.dart';
@@ -674,7 +675,7 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
                             ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
                             if (byteData == null) return;
                             Uint8List pngBytes = byteData.buffer.asUint8List();
-                            String? directory = await getDownload();
+                            String? directory =  (await getTemporaryDirectory()).path;
                             if (directory == null) return;
                             File imgFile = File("$directory/itra_${DateTime.now().microsecond}.png");
                             await imgFile.writeAsBytes(pngBytes);

@@ -68,7 +68,7 @@ dependencies:
   draggable_widget: ^2.0.0
   dio: ^5.2.1+1
   pocketbase: ^0.10.3
-  tapioca: ^1.0.6+1
+  ffmpeg_kit_flutter: ^6.0.3
 
 dev_dependencies:
   flutter_test:

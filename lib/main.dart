@@ -20,6 +20,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+  // final cup = Cup();
   await Hive.initFlutter();
   var box = await Hive.openBox(robobox);
   box.toMap().forEach((key, value) {

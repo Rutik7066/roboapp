@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
       log("appName ${packageInfo.appName}");
       log("packageName ${packageInfo.packageName}");
       log("version ${packageInfo.version}");
-      log("buildNumber ${packageInfo.buildNumber}");
+      log("current version  ${packageInfo.buildNumber}");
       int current = int.parse(packageInfo.buildNumber);
       http.get(Uri.parse('https://robo.itraindia.org/server/versionstatus.json')).then((value) {
         int latest = jsonDecode(value.body)['buildNumber'];

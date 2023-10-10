@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:roboapp/component/list/all_business_design.dart';
 import 'package:roboapp/const.dart';
 
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -29,15 +30,18 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FutureBuilder(
-          future: get(Uri.parse('https://robo.itraindia.org/server/apknewdesignclient.php?type=alldesignlist&business_category=${box.get("business_category")}')),
+          future: get(Uri.parse(
+              'https://robo.itraindia.org/server/apknewdesignclient.php?type=alldesignlist&business_category=${box.get("business_category")}')),
           builder: (context, snap) {
             if (snap.connectionState == ConnectionState.done || snap.hasData) {
-              Map<String, dynamic> data = Map<String, dynamic>.from(json.decode(snap.data!.body));
+              Map<String, dynamic> data =
+                  Map<String, dynamic>.from(json.decode(snap.data!.body));
               List category = [
                 {"cat": "todaydesign", "title": "Today's Event"},
                 {"cat": "upcomingdesign", "title": "Upcomming Event"},
                 {"cat": "greetingdesign", "title": "Greetings"},
-                {"cat": "businessdesign", "title": "Business"},
+                {"cat": "businessdesign", "title": "My Business"},
+                {"cat": "businessdesign", "title": "All Business Design"},
                 {"cat": "motivationaldesign", "title": "Motivational"},
                 {"cat": "generaldesign", "title": "Genaral"},
               ];
@@ -55,15 +59,48 @@ class _HomePageState extends State<HomePage> {
                 // padding: const EdgeInsets.all(5),
                 children: [
                   const Ad(),
-                  TodayDesign(cat: "todaydesign", catData: data["todaydesign"], title: "Today's Event"),
-                  UpcommingDesign(cat: "upcomingdesign", catData: data["upcomingdesign"], title: "Upcoming Event"),
-                  if (box.get('bus_cat') != null) BusinessDesign(cat: "businessdesign", catData: data["businessdesign"], title: "Business"),
-                  GreetingDesign(cat: "greetingdesign", catData: data["greetingdesign"], title: "Greetings"),
-                  MotivationalDesign(cat: "motivationaldesign", catData: data["motivationaldesign"], title: "Motivational"),
-                  GeneralDesign(cat: "generaldesign", catData: data["generaldesign"], title: "Genaral"),
-                  const SizedBox(
-                    height: 100,
-                  )
+                  TodayDesign(
+                      cat: "todaydesign",
+                      catData: data["todaydesign"],
+                      title: "Today's Event"),
+                  UpcommingDesign(
+                      cat: "upcomingdesign",
+                      catData: data["upcomingdesign"],
+                      title: "Upcoming Event"),
+                  if (box.get('bus_cat') != null)
+                    BusinessDesign(
+                        cat: "businessdesign",
+                        catData: data["businessdesign"],
+                        title: "My Business"),
+                  FutureBuilder(
+                      future: get(Uri.parse(
+                          'https://robo.itraindia.org/designnewapi/user/businesscategory')),
+                      builder: (context, connection) {
+                        if (connection.connectionState ==
+                                ConnectionState.done ||
+                            connection.hasData) {
+                          List obj = json.decode(connection.data!.body);
+                          return AllBusinessDesign(
+                              cat: "businessdesign",
+                              catData: obj,
+                              title: "All Business Design");
+                        } else {
+                          return Container();
+                        }
+                      }),
+                  GreetingDesign(
+                      cat: "greetingdesign",
+                      catData: data["greetingdesign"],
+                      title: "Greetings"),
+                  MotivationalDesign(
+                      cat: "motivationaldesign",
+                      catData: data["motivationaldesign"],
+                      title: "Motivational"),
+                  GeneralDesign(
+                      cat: "generaldesign",
+                      catData: data["generaldesign"],
+                      title: "Genaral"),
+                  const SizedBox(height: 100)
                 ],
               );
             } else {

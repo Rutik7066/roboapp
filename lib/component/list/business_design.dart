@@ -30,7 +30,7 @@ class _BusinessDesignState extends State<BusinessDesign> {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+           children: [
             Text(
               widget.title.toString(),
               style: const TextStyle(fontWeight: FontWeight.bold),

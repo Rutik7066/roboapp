@@ -96,6 +96,7 @@ class _UpcommingDesignState extends State<UpcommingDesign> {
                                       fadeInDuration: Duration.zero,
                                     ),
                                     onTap: () {
+                                      
                                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                                         return ImageSelection(
                                           isOtherCacheManager: false,

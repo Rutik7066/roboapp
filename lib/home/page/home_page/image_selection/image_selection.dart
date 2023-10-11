@@ -122,8 +122,10 @@ class _ImageSelectionState extends State<ImageSelection> {
                             children: design.map((e) {
                               return GestureDetector(
                                 onTap: () async {
+                                  // 0 means it is premium
+                                  // (widget.date != null && widget.date.toString().isNotEmpty)
                                   if (e['isFree'].toString().contains("0") &&
-                                      isDemo() &&
+                                     
                                       !isValid()) {
                                     if (mounted) {
                                       QuickAlert.show(

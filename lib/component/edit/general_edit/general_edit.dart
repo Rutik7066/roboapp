@@ -641,22 +641,23 @@ class _GeneralEditState extends State<GeneralEdit> {
                     IconButton(
                       onPressed: () async {
                         print("Date:=> ${widget.date.toString().isNotEmpty}");
-                        // if (widget.date != null && widget.date.toString().isNotEmpty) {
-                        //   // Only for upcomming event
-                        //   String validity = box.get("validity");
-                        //   DateTime validityDate = DateFormat("yyyy-MM-dd").parse(validity);
-                        //   DateTime eventDate = DateFormat("yyyy-MM-dd").parse(widget.date!);
-                        //   if (eventDate.isAfter(validityDate)) {
-                        //     QuickAlert.show(
-                        //       barrierDismissible: false,
-                        //       context: context,
-                        //       type: QuickAlertType.warning,
-                        //       title: 'Upgrade plan.',
-                        //       text: 'Sorry can not download poster for events after demo period.',
-                        //     );
-                        //     return;
-                        //   }
-                        // }
+                        if (widget.date != null && widget.date.toString().isNotEmpty) {
+                          // Only for upcomming event
+                          String validity = box.get("validity");
+                          DateTime validityDate = DateFormat("yyyy-MM-dd").parse(validity);
+                          DateTime eventDate = DateFormat("yyyy-MM-dd").parse(widget.date!);
+                          if (eventDate.isAfter(validityDate)) {
+                            QuickAlert.show(
+                              barrierDismissible: false,
+                              context: context,
+                              type: QuickAlertType.warning,
+                              title: 'Upgrade plan.',
+                              text: 'Sorry can not download poster for events after demo period.',
+                            );
+                          
+                         return;
+                          }
+                        }
 
                         // if (isDemo() && !isValid()) {
                         //   QuickAlert.show(

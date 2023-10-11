@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:roboapp/utils.dart';
 import 'package:roboapp/const.dart';
 import 'package:http/http.dart' as http;
 import 'package:roboapp/home/page/brand_info/brand_info.dart';
@@ -104,7 +105,7 @@ class _HomeState extends State<Home> {
               centerTitle: (box.get('plan') == "Demo") ? false : true,
               automaticallyImplyLeading: false,
               actions: [
-                if (box.get('plan') == "Demo")
+                if (box.get('plan') == "Demo" || !isValid())
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: SizedBox(

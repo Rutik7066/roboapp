@@ -123,7 +123,7 @@ class _AllBusinessDesignState extends State<AllBusinessDesign> {
                                               return ImageSelection(
                                         isOtherCacheManager: true,
                                         link: "https://robo.itraindia.org/designnewapi/user/businesslist?business_category=${bus['categoryid']}",
-                                        name:bus['category'],
+                                        name: event["category"],
                                       );
                                             }));
                                           },

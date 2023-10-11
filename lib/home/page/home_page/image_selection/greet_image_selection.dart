@@ -107,7 +107,8 @@ class _GreetImageSelectionState extends State<GreetImageSelection> {
                               print(e);
                               return GestureDetector(
                                 onTap: () async {
-                                  if (e['isFree'].toString().contains("0") && isDemo() && !isValid()) {
+                                  // 0 means it is premium
+                                  if (e['isFree'].toString().contains("0")  && !isValid()) {
                                     if (mounted) {
                                       QuickAlert.show(
                                         barrierDismissible: false,

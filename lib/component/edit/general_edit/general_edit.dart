@@ -881,70 +881,72 @@ class _GeneralEditState extends State<GeneralEdit> {
           text: 'Failed to donwload video or image',
         );
       }
-      return;
+      return; 
     }
     dev.log("image : $frame");
     dev.log("video : $video");
 
-    if (Platform.isAndroid) {
-      try {
-        String path =
-            "${(await getDownload())}/itra_${DateTime.now().microsecond}.mp4";
-        File outPutFile= File(path);
-        final session =
-            await FFmpegKit.executeAsync(getCommand(video, frame, outPutFile.path));
-        final returnCode = await session.getReturnCode();
-        if (ReturnCode.isSuccess(returnCode)) {
-          var re = await GallerySaver.saveVideo(path);
-          if (mounted && re == false) {
-            Navigator.pop(context);
-            QuickAlert.show(
-              barrierDismissible: false,
-              context: context,
-              type: QuickAlertType.error,
-              title: 'Oops...',
-              text: 'Sorry, failed to save video in gallery',
-            );
-            return null;
-          }
-          if (mounted) {
-            Navigator.pop(context);
-            QuickAlert.show(
-              barrierDismissible: false,
-              context: context,
-              type: QuickAlertType.success,
-              text: 'Saved Successfully.',
-            );
-          }
-          dev.log('done');
-        } else if (ReturnCode.isCancel(returnCode)) {
-          if (mounted) {
-            Navigator.pop(context);
-            QuickAlert.show(
-              barrierDismissible: false,
-              context: context,
-              type: QuickAlertType.error,
-              title: 'Oops...',
-              text: 'Sorry, failed to save video.',
-            );
-            return null;
-          }
-        }
-      } catch (e) {
-        if (mounted) {
-          Navigator.pop(context);
-          QuickAlert.show(
-            barrierDismissible: false,
-            context: context,
-            type: QuickAlertType.error,
-            title: 'Oops...',
-            text: e.toString(),
-          );
-        }
-      }
-    } else {
+//     if (Platform.isAndroid) {
+    
+//         String path =
+//             "${(await getDownload())}/itra_${DateTime.now().microsecond}.mp4";
+//         File outPutFile= File(path);
+//         FFmpegKit.execute(getCommand(video, frame, outPutFile.path)).then((session) async{
+//  final returnCode = await session.getReturnCode();
+//         if (ReturnCode.isSuccess(returnCode)) {
+//           bool? re = await GallerySaver.saveVideo(path);
+//           if (mounted && !re!)  {
+//             Navigator.pop(context);
+//             QuickAlert.show(
+//               barrierDismissible: false,
+//               context: context,
+//               type: QuickAlertType.error,
+//               title: 'Oops...',
+//               text: 'Sorry, failed to save video in gallery',
+//             );
+//             return null;
+//           }
+//           if (mounted) {
+//             Navigator.pop(context);
+//             QuickAlert.show(
+//               barrierDismissible: false,
+//               context: context,
+//               type: QuickAlertType.success,
+//               text: 'Saved Successfully.',
+//             );
+//           }
+//           dev.log('done');
+//         } else if (ReturnCode.isCancel(returnCode)) {
+//           if (mounted) {
+//             Navigator.pop(context);
+//             QuickAlert.show(
+//               barrierDismissible: false,
+//               context: context,
+//               type: QuickAlertType.error,
+//               title: 'Oops...',
+//               text: 'Sorry, failed to save video.',
+//             );
+//             return null;
+//           }
+//         }
+//         }).onError((error, stackTrace) {
+//           print(stackTrace.toString());
+//   if (mounted) {
+//           Navigator.pop(context);
+//           QuickAlert.show(
+//             barrierDismissible: false,
+//             context: context,
+//             type: QuickAlertType.error,
+//             title: 'Oops...',
+//             text: error.toString(),
+//           );
+//         }
+//         });
+       
+      
+//     } else {
       final request = http.MultipartRequest(
-          'POST', Uri.parse('http://13.200.79.156:3000/merge-video'));
+          'POST', Uri.parse('https://videomerge-production.up.railway.app/merge-video'));
       request.files.add(await http.MultipartFile.fromPath("image", frame,
           contentType: MediaType('image', 'png')));
       request.files.add(await http.MultipartFile.fromPath('video', video,
@@ -1027,7 +1029,7 @@ class _GeneralEditState extends State<GeneralEdit> {
       }
     }
   }
-}
+// }
 
 class FontSelection extends StatefulWidget {
   final List<String> fontFamilies;

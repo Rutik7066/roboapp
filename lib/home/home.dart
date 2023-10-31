@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
             showCancelBtn: true,
             confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
             cancelBtnTextStyle: TextStyle(
-              fontSize: 15,
+              fontSize: 15
             ),
             onConfirmBtnTap: () {
               launchUrlString(

@@ -135,6 +135,7 @@ class _AllBusinessDesignState extends State<AllBusinessDesign> {
                                 child: Text(
                                   event["category"],
                                   softWrap: true,
+                                 textAlign: TextAlign.center,
                                   style: const TextStyle(fontSize: 13),
                                 ),
                               )

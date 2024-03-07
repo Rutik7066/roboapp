@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:developer';
 import 'package:android_path_provider/android_path_provider.dart';
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter/ffmpeg_session.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:roboapp/const.dart';
@@ -22,6 +20,10 @@ Future<String?> getDownload() async {
   return Platform.isAndroid
       ? (await AndroidPathProvider.downloadsPath)
       : (await getDownloadsDirectory())?.path;
+}
+
+Future <String?> getAppDir()async{
+  return (await getApplicationSupportDirectory()).path;
 }
 
 bool isDemo() => utilBox.get("plan").toString().startsWith("Demo");

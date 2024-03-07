@@ -99,7 +99,7 @@ class _ProfileState extends State<Profile> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                "App Version 5.0.2",
+                "App Version 5.0.4",
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
               ),
             ),

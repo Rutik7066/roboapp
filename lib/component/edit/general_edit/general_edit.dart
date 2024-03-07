@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter/return_code.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:hive/hive.dart';
@@ -743,7 +741,7 @@ class _GeneralEditState extends State<GeneralEdit> {
           await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData == null) return null;
       Uint8List pngBytes = byteData.buffer.asUint8List();
-      String? directory =  (await getTemporaryDirectory()).path;
+      String? directory =  await getAppDir();
       if (directory == null) return null;
       File imgFile = File("$directory/itra_${DateTime.now().microsecond}.png");
       await imgFile.writeAsBytes(pngBytes);
@@ -793,7 +791,7 @@ class _GeneralEditState extends State<GeneralEdit> {
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     if (byteData == null) return null;
     Uint8List pngBytes = byteData.buffer.asUint8List();
-    String? directory = (await getTemporaryDirectory()).path;
+   String? directory = await getAppDir();
     File imgFile = File("$directory/itra_${DateTime.now().microsecond}.png");
     await imgFile.writeAsBytes(pngBytes);
     return imgFile.path;
@@ -947,7 +945,7 @@ class _GeneralEditState extends State<GeneralEdit> {
 //     } else {
       final request = http.MultipartRequest(
           'POST', Uri.parse('https://videomerge-production.up.railway.app/merge-video'));
-      request.files.add(await http.MultipartFile.fromPath("image", frame,
+      request.files.add( await http.MultipartFile.fromPath("image", frame,
           contentType: MediaType('image', 'png')));
       request.files.add(await http.MultipartFile.fromPath('video', video,
           contentType: MediaType('video', 'mp4')));

@@ -1,10 +1,8 @@
-import 'package:ffmpeg_kit_flutter/return_code.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:roboapp/component/edit/custom_edit/component/custom_image_file.dart';
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 
 import 'package:video_player/video_player.dart';
 import 'package:roboapp/const.dart';
@@ -573,8 +571,7 @@ class _CustomEditState extends State<CustomEdit> {
           await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData == null) return null;
       Uint8List pngBytes = byteData.buffer.asUint8List();
-      String? directory =  (await getTemporaryDirectory()).path;
-      if (directory == null) return null;
+      String? directory =  await getAppDir();
       File imgFile = File("$directory/itra_${DateTime.now().microsecond}.png");
       await imgFile.writeAsBytes(pngBytes);
       var res = await ImageGallerySaver.saveImage(imgFile.readAsBytesSync(),
@@ -624,7 +621,7 @@ class _CustomEditState extends State<CustomEdit> {
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     if (byteData == null) return null;
     Uint8List pngBytes = byteData.buffer.asUint8List();
-    String? directory = (await getTemporaryDirectory()).path;
+        String? directory = await getAppDir();
     File imgFile = File("$directory/itra_${DateTime.now().microsecond}.png");
     await imgFile.writeAsBytes(pngBytes);
     return imgFile.path;
@@ -730,7 +727,7 @@ class _CustomEditState extends State<CustomEdit> {
           'POST', Uri.parse('https://videomerge-production.up.railway.app/merge-video'));
       request.headers
           .addAll({'Accept': '*/*', 'Content-Type': 'multipart/form-data'});
-      request.files.add(await http.MultipartFile.fromPath("image", frame,
+      request.files.add( await http.MultipartFile.fromPath("image", frame,
           contentType: MediaType('image', 'png')));
       request.files.add(await http.MultipartFile.fromPath('video', video,
           contentType: MediaType('video', 'mp4')));
@@ -758,6 +755,8 @@ class _CustomEditState extends State<CustomEdit> {
               );
               return null;
             }
+            await File(frame).delete();
+            await File(video).delete();
             if (mounted) {
               Navigator.pop(context);
               QuickAlert.show(

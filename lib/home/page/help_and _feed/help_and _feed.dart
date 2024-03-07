@@ -28,7 +28,7 @@ class HelpAndfeed extends StatelessWidget {
         ),
         Card(
           child: InkWell(
-            onTap: () async => await launchUrlString("https://wa.me/message/ARQDGMJBMAPVC1", mode: LaunchMode.externalApplication),
+            onTap: () async => await launchUrlString("https://wa.link/lk73dl", mode: LaunchMode.externalApplication),
             child: GridTile(
               child: Image.asset(
                 'assets/2.jpeg',
@@ -50,7 +50,7 @@ class HelpAndfeed extends StatelessWidget {
         ),
         Card(
           child: InkWell(
-            onTap: () async => await launchUrlString("https://wa.me/message/MZVG2LLX6QMZC1", mode: LaunchMode.externalApplication),
+            onTap: () async => await launchUrlString("https://wa.link/lk73dl", mode: LaunchMode.externalApplication),
             child: GridTile(
               child: Image.asset(
                 'assets/4.jpeg',

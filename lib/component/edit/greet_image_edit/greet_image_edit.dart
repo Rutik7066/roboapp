@@ -675,7 +675,7 @@ print("conpairing ${!(box.get("business_mobile").toString().compareTo('885585097
                             ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
                             if (byteData == null) return;
                             Uint8List pngBytes = byteData.buffer.asUint8List();
-                            String? directory =  (await getTemporaryDirectory()).path;
+                            String? directory =  await getAppDir();
                             if (directory == null) return;
                             File imgFile = File("$directory/itra_${DateTime.now().microsecond}.png");
                             await imgFile.writeAsBytes(pngBytes);

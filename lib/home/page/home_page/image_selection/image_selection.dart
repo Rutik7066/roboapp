@@ -20,11 +20,7 @@ class ImageSelection extends StatefulWidget {
   final String link;
   final String name;
   final bool isOtherCacheManager;
-  const ImageSelection(
-      {super.key,
-      required this.name,
-      required this.link,
-      required this.isOtherCacheManager});
+  const ImageSelection({super.key, required this.name, required this.link, required this.isOtherCacheManager});
 
   @override
   State<ImageSelection> createState() => _ImageSelectionState();
@@ -42,24 +38,17 @@ class _ImageSelectionState extends State<ImageSelection> {
       body: FutureBuilder(
           future: get(Uri.parse(widget.link)),
           builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.done &&
-                snap.data != null) {
+            if (snap.connectionState == ConnectionState.done && snap.data != null) {
               var event = json.decode(snap.data!.body);
               log(event.toString());
-              return Consumer( 
+              return Consumer(
                 builder: (context, ref, child) {
                   final lang = ref.watch(langProvider);
                   log(lang);
-                  List design = lang.contains("0")
-                      ? event
-                      : (event as List)
-                          .where((element) =>
-                              element['languageid'].toString().contains(lang))
-                          .toList();
+                  List design = lang.contains("0") ? event : (event as List).where((element) => element['languageid'].toString().contains(lang)).toList();
                   design.sort((a, b) {
                     // priority is given to 'isFree' (descending order)
-                    int compare = int.parse(b['isFree'])
-                        .compareTo(int.parse(a['isFree']));
+                    int compare = int.parse(b['isFree']).compareTo(int.parse(a['isFree']));
 
                     // if 'isFree' is the same, then priority is given to 'type' where value is 'video'
                     if (compare == 0) {
@@ -124,9 +113,7 @@ class _ImageSelectionState extends State<ImageSelection> {
                                 onTap: () async {
                                   // 0 means it is premium
                                   // (widget.date != null && widget.date.toString().isNotEmpty)
-                                  if (e['isFree'].toString().contains("0") &&
-                                     
-                                      !isValid()) {
+                                  if (e['isFree'].toString().contains("0") && !isValid()) {
                                     if (mounted) {
                                       QuickAlert.show(
                                         barrierDismissible: false,
@@ -136,8 +123,7 @@ class _ImageSelectionState extends State<ImageSelection> {
                                         text: 'Upgrade plan to continue.',
                                         confirmBtnText: "Upgrade",
                                         onConfirmBtnTap: () {
-                                          Navigator.popUntil(context,
-                                              ModalRoute.withName('/'));
+                                          Navigator.popUntil(context, ModalRoute.withName('/'));
                                           ref.read(gIndex.notifier).state = 7;
                                         },
                                       );
@@ -151,18 +137,10 @@ class _ImageSelectionState extends State<ImageSelection> {
                                         return GeneralEdit(
                                           // NOTE -> Even if the key is "image" it can be vidoe and image.
                                           // reffer to "type" value to know it's type.
-                                          file: e["type"]
-                                                  .toString()
-                                                  .contains('video')
-                                              ? '$baseVideolink${e['src']}'
-                                              : '$baseImagelink${e['image']}',
-                                          type: e["type"].toString().isEmpty
-                                              ? "image"
-                                              : e["type"],
+                                          file: e["type"].toString().contains('video') ? '$baseVideolink${e['src']}' : '$baseImagelink${e['image']}',
+                                          type: e["type"].toString().isEmpty ? "image" : e["type"],
                                           date: e["date"],
-                                          isFree: e['isFree']
-                                              .toString()
-                                              .contains("1"),
+                                          isFree: e['isFree'].toString().contains("1"),
                                         );
                                       },
                                     ),
@@ -172,34 +150,25 @@ class _ImageSelectionState extends State<ImageSelection> {
                                   child: Container(
                                     margin: const EdgeInsets.all(2),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          10), // Add BorderRadius here
+                                      borderRadius: BorderRadius.circular(10), // Add BorderRadius here
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.grey
-                                              .withOpacity(0.5), // Shadow color
+                                          color: Colors.grey.withOpacity(0.5), // Shadow color
                                           spreadRadius: 4, // Spread radius
                                           blurRadius: 5, // Blur radius
-                                          offset: Offset(0,
-                                              3), // Offset in x and y directions
+                                          offset: Offset(0, 3), // Offset in x and y directions
                                         ),
                                       ],
                                     ),
                                     child: Stack(
                                       children: [
                                         CachedNetworkImage(
-                                          imageUrl:
-                                              '$baseImagelink${e['image']}',
+                                          imageUrl: '$baseImagelink${e['image']}',
                                           fit: BoxFit.cover,
-                                          cacheManager:
-                                              widget.isOtherCacheManager
-                                                  ? otherSelectionCacheManager
-                                                  : eventSelectionCacheManager,
+                                          cacheManager: widget.isOtherCacheManager ? otherSelectionCacheManager : eventSelectionCacheManager,
                                           fadeOutDuration: Duration.zero,
                                         ),
-                                        if (e['isFree']
-                                            .toString()
-                                            .contains("1"))
+                                        if (e['isFree'].toString().contains("1"))
                                           Positioned(
                                             bottom: 0,
                                             right: 0,
@@ -212,34 +181,32 @@ class _ImageSelectionState extends State<ImageSelection> {
                                               height: 100,
                                             ),
                                           ),
-                                        if (e['isFree']
-                                            .toString()
-                                            .contains("0"))
+                                        if (e['isFree'].toString().contains("0"))
                                           Positioned(
                                             bottom: 0,
                                             right: 0,
                                             left: 0,
                                             top: 0,
                                             child: Image.asset(
-                                              'assets/premium.png',
+                                              (e['type'].toString().contains('video')) ? 'assets/vlogo.png' : 'assets/premium.png',
                                               fit: BoxFit.contain,
                                               width: 100,
                                               height: 100,
                                             ),
                                           ),
-                                        if (e['type']
-                                            .toString()
-                                            .contains('video'))
-                                          Positioned(
-                                            bottom: 5,
-                                            right: 5,
-                                            child: Image.asset(
-                                              'assets/vlogo.png',
-                                              fit: BoxFit.contain,
-                                              width: 26,
-                                              height: 26,
-                                            ),
-                                          )
+                                        // if (e['type']
+                                        //     .toString()
+                                        //     .contains('video'))
+                                        //   Positioned(
+                                        //     bottom: 5,
+                                        //     right: 5,
+                                        //     child: Image.asset(
+                                        //       'assets/vlogo.png',
+                                        //       fit: BoxFit.contain,
+                                        //       width: 26,
+                                        //       height: 26,
+                                        //     ),
+                                        //   )
                                       ],
                                     ),
                                   ),

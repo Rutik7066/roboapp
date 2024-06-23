@@ -45,8 +45,7 @@ final selectedFontProvider = StateProvider.autoDispose<String>((ref) {
 });
 final selectedImages = StateProvider.autoDispose<List<String>>((ref) => []);
 
-final generalTextTrackingIndex =
-    StateProvider.autoDispose<List<GeneralText>>((ref) => []);
+final generalTextTrackingIndex = StateProvider.autoDispose<List<GeneralText>>((ref) => []);
 
 final List<String> fontFamilies = [
   'Acmes',
@@ -76,13 +75,7 @@ class GeneralEdit extends StatefulWidget {
   final bool? custom;
   final String? date;
   final bool isFree;
-  const GeneralEdit(
-      {super.key,
-      this.date,
-      this.custom,
-      required this.file,
-      required this.type,
-      required this.isFree});
+  const GeneralEdit({super.key, this.date, this.custom, required this.file, required this.type, required this.isFree});
 
   @override
   State<GeneralEdit> createState() => _GeneralEditState();
@@ -102,56 +95,16 @@ class _GeneralEditState extends State<GeneralEdit> {
   }
 
   List<Map<String, dynamic>> frameList = [
-    {
-      "name": "frame_d01.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d01.png', width: 80, height: 80)
-    },
-    {
-      "name": "frame_d02.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d02.png', width: 80, height: 80)
-    },
-    {
-      "name": "frame_d03.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d03.png', width: 80, height: 80)
-    },
-    {
-      "name": "frame_d04.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d04.png', width: 80, height: 80)
-    },
-    {
-      "name": "frame_d08.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d08.png', width: 80, height: 80)
-    },
-    {
-      "name": "frame_d09.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d09.png', width: 80, height: 80)
-    },
-    {
-      "name": "frame_d10.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d10.png', width: 80, height: 80)
-    },
-    {
-      "name": "frame_d05.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d05.png', width: 80, height: 80)
-    },
-    {
-      "name": "frame_d06.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d06.png', width: 80, height: 80)
-    },
-    {
-      "name": "frame_d07.png",
-      "watermark": true,
-      "widget": Image.asset('assets/frame/frame_d07.png', width: 80, height: 80)
-    },
+    {"name": "frame_d01.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d01.png', width: 80, height: 80)},
+    {"name": "frame_d02.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d02.png', width: 80, height: 80)},
+    {"name": "frame_d03.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d03.png', width: 80, height: 80)},
+    {"name": "frame_d04.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d04.png', width: 80, height: 80)},
+    {"name": "frame_d08.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d08.png', width: 80, height: 80)},
+    {"name": "frame_d09.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d09.png', width: 80, height: 80)},
+    {"name": "frame_d10.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d10.png', width: 80, height: 80)},
+    {"name": "frame_d05.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d05.png', width: 80, height: 80)},
+    {"name": "frame_d06.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d06.png', width: 80, height: 80)},
+    {"name": "frame_d07.png", "watermark": true, "widget": Image.asset('assets/frame/frame_d07.png', width: 80, height: 80)},
   ];
   List<Map<String, dynamic>> extraFrame = [];
 
@@ -168,8 +121,7 @@ class _GeneralEditState extends State<GeneralEdit> {
   @override
   void initState() {
     super.initState();
-    print(
-        "conpairing ${!(box.get("business_mobile").toString().compareTo('8855850979') == 0)}");
+    print("conpairing ${!(box.get("business_mobile").toString().compareTo('8855850979') == 0)}");
     if (!(box.get("business_mobile").toString().compareTo('8855850979') == 0)) {
       ScreenProtector.protectDataLeakageOn();
       ScreenProtector.preventScreenshotOn();
@@ -182,9 +134,7 @@ class _GeneralEditState extends State<GeneralEdit> {
       videoPlayerController!.setLooping(true);
       videoPlayerController!.initialize().then((_) => setState(() {}));
       videoPlayerController!.play();
-    } else if (widget.type.contains('video') &&
-        widget.custom != null &&
-        widget.custom!) {
+    } else if (widget.type.contains('video') && widget.custom != null && widget.custom!) {
       videoPlayerController = VideoPlayerController.file(File(widget.file));
       videoPlayerController!.addListener(() {
         setState(() {});
@@ -200,36 +150,15 @@ class _GeneralEditState extends State<GeneralEdit> {
         .then((value) {
       Map<String, dynamic> data = json.decode(value.body);
       dev.log(data.toString());
-      bool watermark =
-          data['watermark'].toString().compareTo("No") == 0 ? false : true;
+      bool watermark = data['watermark'].toString().compareTo("No") == 0 ? false : true;
       isWaterMarked = watermark;
 
       for (var element in data['frames']) {
         frameList.add(
-          {
-            "name": element["frame"],
-            "watermark": watermark,
-            "widget": CachedNetworkImage(
-                fadeInDuration: Duration.zero,
-                cacheManager: eventCacheManager,
-                imageUrl:
-                    "https://robo.itraindia.org/server/frame/${element['frame']}.png",
-                width: 80,
-                height: 80)
-          },
+          {"name": element["frame"], "watermark": watermark, "widget": CachedNetworkImage(fadeInDuration: Duration.zero, cacheManager: eventCacheManager, imageUrl: "https://robo.itraindia.org/server/frame/${element['frame']}.png", width: 80, height: 80)},
         );
         extraFrame.add(
-          {
-            "name": element["frame"],
-            "watermark": watermark,
-            "widget": CachedNetworkImage(
-                fadeInDuration: Duration.zero,
-                cacheManager: eventCacheManager,
-                imageUrl:
-                    "https://robo.itraindia.org/server/frame/${element['frame']}.png",
-                width: 80,
-                height: 80)
-          },
+          {"name": element["frame"], "watermark": watermark, "widget": CachedNetworkImage(fadeInDuration: Duration.zero, cacheManager: eventCacheManager, imageUrl: "https://robo.itraindia.org/server/frame/${element['frame']}.png", width: 80, height: 80)},
         );
         selectedFrame = element["frame"];
       }
@@ -237,59 +166,18 @@ class _GeneralEditState extends State<GeneralEdit> {
     });
   }
 
-  Widget returnFrame(Map<String, dynamic> data,
-      List<Map<String, dynamic>> extraFrame, String selected) {
+  Widget returnFrame(Map<String, dynamic> data, List<Map<String, dynamic>> extraFrame, String selected) {
     List list = [
-      {
-        "name": "frame_d01.png",
-        "watermark": true,
-        "widget": Frame01(data: data)
-      },
-      {
-        "name": "frame_d02.png",
-        "watermark": true,
-        "widget": Frame02(data: data)
-      },
-      {
-        "name": "frame_d03.png",
-        "watermark": true,
-        "widget": Frame03(data: data)
-      },
-      {
-        "name": "frame_d04.png",
-        "watermark": true,
-        "widget": Frame04(data: data)
-      },
-      {
-        "name": "frame_d08.png",
-        "watermark": true,
-        "widget": Frame08(data: data)
-      },
-      {
-        "name": "frame_d09.png",
-        "watermark": true,
-        "widget": Frame09(data: data)
-      },
-      {
-        "name": "frame_d10.png",
-        "watermark": true,
-        "widget": Frame10(data: data)
-      },
-      {
-        "name": "frame_d05.png",
-        "watermark": true,
-        "widget": Frame05(data: data)
-      },
-      {
-        "name": "frame_d06.png",
-        "watermark": true,
-        "widget": Frame06(data: data)
-      },
-      {
-        "name": "frame_d07.png",
-        "watermark": true,
-        "widget": Frame07(data: data)
-      },
+      {"name": "frame_d01.png", "watermark": true, "widget": Frame01(data: data)},
+      {"name": "frame_d02.png", "watermark": true, "widget": Frame02(data: data)},
+      {"name": "frame_d03.png", "watermark": true, "widget": Frame03(data: data)},
+      {"name": "frame_d04.png", "watermark": true, "widget": Frame04(data: data)},
+      {"name": "frame_d08.png", "watermark": true, "widget": Frame08(data: data)},
+      {"name": "frame_d09.png", "watermark": true, "widget": Frame09(data: data)},
+      {"name": "frame_d10.png", "watermark": true, "widget": Frame10(data: data)},
+      {"name": "frame_d05.png", "watermark": true, "widget": Frame05(data: data)},
+      {"name": "frame_d06.png", "watermark": true, "widget": Frame06(data: data)},
+      {"name": "frame_d07.png", "watermark": true, "widget": Frame07(data: data)},
       ...extraFrame
     ];
     return list.firstWhere((element) => element["name"] == selected)['widget'];
@@ -316,8 +204,7 @@ class _GeneralEditState extends State<GeneralEdit> {
                 fit: StackFit.expand,
                 children: [
                   if (widget.type.contains('video'))
-                    if (videoPlayerController!.value.isInitialized)
-                      VideoPlayer(videoPlayerController!),
+                    if (videoPlayerController!.value.isInitialized) VideoPlayer(videoPlayerController!),
                   RepaintBoundary(
                     key: _globalKey,
                     child: SizedBox(
@@ -326,8 +213,7 @@ class _GeneralEditState extends State<GeneralEdit> {
                       child: Stack(
                         fit: StackFit.expand,
                         children: <Widget>[
-                          if (widget.type.contains('image') &&
-                              widget.custom == null)
+                          if (widget.type.contains('image') && widget.custom == null)
                             Positioned(
                               bottom: 0,
                               left: 0,
@@ -342,9 +228,7 @@ class _GeneralEditState extends State<GeneralEdit> {
                                 height: width,
                               ),
                             ),
-                          if (widget.type.contains('image') &&
-                              widget.custom != null &&
-                              widget.custom!)
+                          if (widget.type.contains('image') && widget.custom != null && widget.custom!)
                             Positioned(
                               bottom: 0,
                               left: 0,
@@ -371,16 +255,11 @@ class _GeneralEditState extends State<GeneralEdit> {
                           Consumer(
                             builder: (context, ref, child) {
                               Map<String, dynamic> busData = {
-                                "businessname":
-                                    box.get("business_name", defaultValue: ""),
-                                "mobile": box.get("business_mobile",
-                                    defaultValue: ""),
-                                "email":
-                                    box.get("business_email", defaultValue: ""),
-                                "address": box.get("business_address",
-                                    defaultValue: ""),
-                                "businessdetails": box.get("business_details",
-                                    defaultValue: ""),
+                                "businessname": box.get("business_name", defaultValue: ""),
+                                "mobile": box.get("business_mobile", defaultValue: ""),
+                                "email": box.get("business_email", defaultValue: ""),
+                                "address": box.get("business_address", defaultValue: ""),
+                                "businessdetails": box.get("business_details", defaultValue: ""),
                                 "textstyle": ref.watch(selectedFontProvider),
                                 "show_frame": true,
                               };
@@ -389,8 +268,7 @@ class _GeneralEditState extends State<GeneralEdit> {
                                 left: 0,
                                 right: 0,
                                 top: 0,
-                                child: returnFrame(
-                                    busData, extraFrame, selectedFrame),
+                                child: returnFrame(busData, extraFrame, selectedFrame),
                               );
                             },
                           ),
@@ -408,8 +286,7 @@ class _GeneralEditState extends State<GeneralEdit> {
                                     _left += details.focalPointDelta.dx;
                                     _top += details.focalPointDelta.dy;
                                   });
-                                  dev.log(
-                                      "scale : $_scale, left : $_left, top : $_top");
+                                  dev.log("scale : $_scale, left : $_left, top : $_top");
                                 },
                                 child: Transform.scale(
                                   scale: _scale,
@@ -448,9 +325,7 @@ class _GeneralEditState extends State<GeneralEdit> {
                             top: 0,
                             child: Consumer(
                               builder: (context, ref, child) {
-                                return Stack(
-                                    children:
-                                        ref.watch(generalTextTrackingIndex));
+                                return Stack(children: ref.watch(generalTextTrackingIndex));
                               },
                             ),
                           ),
@@ -508,8 +383,7 @@ class _GeneralEditState extends State<GeneralEdit> {
                       return IconButton(
                         onPressed: () async {
                           dev.log("add image");
-                          FilePickerResult? res = await FilePicker.platform
-                              .pickFiles(type: FileType.image);
+                          FilePickerResult? res = await FilePicker.platform.pickFiles(type: FileType.image);
                           if (res != null) {
                             ref.read(selectedImages.notifier).state = [
                               ...ref.read(selectedImages.notifier).state,
@@ -517,18 +391,14 @@ class _GeneralEditState extends State<GeneralEdit> {
                             ];
                           }
                         },
-                        icon: Icon(Ionicons.image_outline,
-                            color: Colors.deepPurple.shade600),
+                        icon: Icon(Ionicons.image_outline, color: Colors.deepPurple.shade600),
                         constraints: const BoxConstraints.tightFor(
                           width: 48.0,
                           height: 48.0,
                         ),
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Colors.deepPurple.shade50),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8))),
+                          backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
+                          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                         ),
                       );
                     },
@@ -546,17 +416,14 @@ class _GeneralEditState extends State<GeneralEdit> {
                       shouldShowLogo = !shouldShowLogo;
                       setState(() {});
                     },
-                    icon: Icon(Ionicons.image_outline,
-                        color: Colors.deepPurple.shade600),
+                    icon: Icon(Ionicons.image_outline, color: Colors.deepPurple.shade600),
                     constraints: const BoxConstraints.tightFor(
                       width: 48.0,
                       height: 48.0,
                     ),
                     style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.deepPurple.shade50),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8))),
+                      backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                     ),
                   ),
                   const Text(
@@ -572,27 +439,18 @@ class _GeneralEditState extends State<GeneralEdit> {
                       return IconButton(
                         onPressed: () async {
                           ref.read(generalTextTrackingIndex.notifier).state = [
-                            ...ref
-                                .read(generalTextTrackingIndex.notifier)
-                                .state,
-                            GeneralText(
-                                trackingIndex:
-                                    ref.watch(generalTextTrackingIndex).length +
-                                        1),
+                            ...ref.read(generalTextTrackingIndex.notifier).state,
+                            GeneralText(trackingIndex: ref.watch(generalTextTrackingIndex).length + 1),
                           ];
                         },
-                        icon: Icon(Ionicons.text,
-                            color: Colors.deepPurple.shade600),
+                        icon: Icon(Ionicons.text, color: Colors.deepPurple.shade600),
                         constraints: const BoxConstraints.tightFor(
                           width: 48.0,
                           height: 48.0,
                         ),
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Colors.deepPurple.shade50),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8))),
+                          backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
+                          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                         ),
                       );
                     },
@@ -609,22 +467,18 @@ class _GeneralEditState extends State<GeneralEdit> {
                     onPressed: () async {
                       final t = await showDialog(
                         context: context,
-                        builder: (context) =>
-                            FontSelection(fontFamilies: fontFamilies),
+                        builder: (context) => FontSelection(fontFamilies: fontFamilies),
                       );
                       dev.log(t.toString());
                     },
-                    icon: Icon(Ionicons.text_outline,
-                        color: Colors.deepPurple.shade600),
+                    icon: Icon(Ionicons.text_outline, color: Colors.deepPurple.shade600),
                     constraints: const BoxConstraints.tightFor(
                       width: 48.0,
                       height: 48.0,
                     ),
                     style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.deepPurple.shade50),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8))),
+                      backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                     ),
                   ),
                   const Text(
@@ -652,8 +506,8 @@ class _GeneralEditState extends State<GeneralEdit> {
                               title: 'Upgrade plan.',
                               text: 'Sorry can not download poster for events after demo period.',
                             );
-                          
-                         return;
+
+                            return;
                           }
                         }
 
@@ -678,8 +532,7 @@ class _GeneralEditState extends State<GeneralEdit> {
                               text: 'Upgrade plan to increase limit.',
                               confirmBtnText: "Upgrade",
                               onConfirmBtnTap: () {
-                                Navigator.popUntil(
-                                    context, ModalRoute.withName('/'));
+                                Navigator.popUntil(context, ModalRoute.withName('/'));
                                 ref.read(gIndex.notifier).state = 7;
                               },
                             );
@@ -696,17 +549,14 @@ class _GeneralEditState extends State<GeneralEdit> {
                           await saveImage();
                         }
                       },
-                      icon: Icon(Ionicons.cloud_download_outline,
-                          color: Colors.deepPurple.shade600),
+                      icon: Icon(Ionicons.cloud_download_outline, color: Colors.deepPurple.shade600),
                       constraints: const BoxConstraints.tightFor(
                         width: 48.0,
                         height: 48.0,
                       ),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Colors.deepPurple.shade50),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8))),
+                        backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                       ),
                     ),
                     const Text(
@@ -724,8 +574,7 @@ class _GeneralEditState extends State<GeneralEdit> {
   Future<String?> saveImage() async {
     dev.log('Save Image');
     try {
-      RenderRepaintBoundary boundary = _globalKey.currentContext
-          ?.findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary = _globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 10.0);
 
       if (mounted) {
@@ -737,16 +586,14 @@ class _GeneralEditState extends State<GeneralEdit> {
           text: 'Fetching your data',
         );
       }
-      ByteData? byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
+      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData == null) return null;
       Uint8List pngBytes = byteData.buffer.asUint8List();
-      String? directory =  await getAppDir();
+      String? directory = await getAppDir();
       if (directory == null) return null;
       File imgFile = File("$directory/itra_${DateTime.now().microsecond}.png");
       await imgFile.writeAsBytes(pngBytes);
-      var res = await ImageGallerySaver.saveImage(imgFile.readAsBytesSync(),
-          quality: 60, name: "itra_${DateTime.now().microsecond}");
+      var res = await ImageGallerySaver.saveImage(imgFile.readAsBytesSync(), quality: 60, name: "itra_${DateTime.now().microsecond}");
       if (res['isSuccess'] == false && mounted) {
         Navigator.pop(context);
         QuickAlert.show(
@@ -785,13 +632,12 @@ class _GeneralEditState extends State<GeneralEdit> {
   }
 
   Future<String?> getFrame() async {
-    RenderRepaintBoundary boundary =
-        _globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+    RenderRepaintBoundary boundary = _globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage(pixelRatio: 10.0);
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     if (byteData == null) return null;
     Uint8List pngBytes = byteData.buffer.asUint8List();
-   String? directory = await getAppDir();
+    String? directory = await getAppDir();
     File imgFile = File("$directory/itra_${DateTime.now().microsecond}.png");
     await imgFile.writeAsBytes(pngBytes);
     return imgFile.path;
@@ -810,8 +656,7 @@ class _GeneralEditState extends State<GeneralEdit> {
       String filePath = '$tempPath/my_downloaded_video.mp4';
 
       // Start downloading
-      await dio.download(widget.file, filePath,
-          onReceiveProgress: (receivedBytes, totalBytes) {
+      await dio.download(widget.file, filePath, onReceiveProgress: (receivedBytes, totalBytes) {
         // You can update the UI according to the progress here
         print((receivedBytes / totalBytes * 100).toStringAsFixed(0) + "%");
       });
@@ -879,13 +724,13 @@ class _GeneralEditState extends State<GeneralEdit> {
           text: 'Failed to donwload video or image',
         );
       }
-      return; 
+      return;
     }
     dev.log("image : $frame");
     dev.log("video : $video");
 
 //     if (Platform.isAndroid) {
-    
+
 //         String path =
 //             "${(await getDownload())}/itra_${DateTime.now().microsecond}.mp4";
 //         File outPutFile= File(path);
@@ -940,67 +785,46 @@ class _GeneralEditState extends State<GeneralEdit> {
 //           );
 //         }
 //         });
-       
-      
-//     } else {
-      final request = http.MultipartRequest(
-          'POST', Uri.parse('https://videomerge-production.up.railway.app/merge-video'));
-      request.files.add( await http.MultipartFile.fromPath("image", frame,
-          contentType: MediaType('image', 'png')));
-      request.files.add(await http.MultipartFile.fromPath('video', video,
-          contentType: MediaType('video', 'mp4')));
-      try {
-        final streamedResponse = await request.send();
-        dev.log("request sent and responcse recieved");
-        if (streamedResponse.statusCode == 200) {
-          try {
-            final videoResponseBytes = await streamedResponse.stream.toBytes();
-            String path =
-                "${(await getDownload())}/itra_${DateTime.now().microsecond}.mp4";
 
-            final file = File(path);
-            await file.writeAsBytes(videoResponseBytes);
-            dev.log(file.path);
-            var res = await GallerySaver.saveVideo(file.path);
-            if (mounted && res == false) {
-              Navigator.pop(context);
-              QuickAlert.show(
-                barrierDismissible: false,
-                context: context,
-                type: QuickAlertType.error,
-                title: 'Oops...',
-                text: 'Sorry, failed to save video in gallery',
-              );
-              return null;
-            }
-            if (mounted) {
-              Navigator.pop(context);
-              QuickAlert.show(
-                barrierDismissible: false,
-                context: context,
-                type: QuickAlertType.success,
-                text: 'Saved Successfully.',
-              );
-            }
-            dev.log('done');
-          } on Exception catch (e) {
-            dev.log('Error saving video code: $e');
-            if (mounted) {
-              Navigator.pop(context);
-              QuickAlert.show(
-                barrierDismissible: false,
-                context: context,
-                type: QuickAlertType.error,
-                title: 'Oops...',
-                text: e.toString(),
-              );
-            }
+//     } else {
+    final request = http.MultipartRequest('POST', Uri.parse('https://videomerge-production-23ba.up.railway.app/merge-video'));
+    request.files.add(await http.MultipartFile.fromPath("image", frame, contentType: MediaType('image', 'png')));
+    request.files.add(await http.MultipartFile.fromPath('video', video, contentType: MediaType('video', 'mp4')));
+    try {
+      final streamedResponse = await request.send();
+      dev.log("request sent and responcse recieved");
+      if (streamedResponse.statusCode == 200) {
+        try {
+          final videoResponseBytes = await streamedResponse.stream.toBytes();
+          String path = "${(await getDownload())}/itra_${DateTime.now().microsecond}.mp4";
+
+          final file = File(path);
+          await file.writeAsBytes(videoResponseBytes);
+          dev.log(file.path);
+          var res = await GallerySaver.saveVideo(file.path);
+          if (mounted && res == false) {
+            Navigator.pop(context);
+            QuickAlert.show(
+              barrierDismissible: false,
+              context: context,
+              type: QuickAlertType.error,
+              title: 'Oops...',
+              text: 'Sorry, failed to save video in gallery',
+            );
+            return null;
           }
-        } else {
-          final videoResponseBytes =
-              await streamedResponse.stream.bytesToString();
-          dev.log(
-              'Failed proccessing video from backend ${streamedResponse.statusCode} : $videoResponseBytes');
+          if (mounted) {
+            Navigator.pop(context);
+            QuickAlert.show(
+              barrierDismissible: false,
+              context: context,
+              type: QuickAlertType.success,
+              text: 'Saved Successfully.',
+            );
+          }
+          dev.log('done');
+        } on Exception catch (e) {
+          dev.log('Error saving video code: $e');
           if (mounted) {
             Navigator.pop(context);
             QuickAlert.show(
@@ -1008,12 +832,13 @@ class _GeneralEditState extends State<GeneralEdit> {
               context: context,
               type: QuickAlertType.error,
               title: 'Oops...',
-              text: videoResponseBytes,
+              text: e.toString(),
             );
           }
         }
-      } catch (e) {
-        dev.log('Error sending video: $e');
+      } else {
+        final videoResponseBytes = await streamedResponse.stream.bytesToString();
+        dev.log('Failed proccessing video from backend ${streamedResponse.statusCode} : $videoResponseBytes');
         if (mounted) {
           Navigator.pop(context);
           QuickAlert.show(
@@ -1021,12 +846,25 @@ class _GeneralEditState extends State<GeneralEdit> {
             context: context,
             type: QuickAlertType.error,
             title: 'Oops...',
-            text: e.toString(),
+            text: videoResponseBytes,
           );
         }
       }
+    } catch (e) {
+      dev.log('Error sending video: $e');
+      if (mounted) {
+        Navigator.pop(context);
+        QuickAlert.show(
+          barrierDismissible: false,
+          context: context,
+          type: QuickAlertType.error,
+          title: 'Oops...',
+          text: e.toString(),
+        );
+      }
     }
   }
+}
 // }
 
 class FontSelection extends StatefulWidget {
@@ -1048,8 +886,7 @@ class _FontSelectionState extends State<FontSelection> {
             children: widget.fontFamilies
                 .map((fontFamily) => GestureDetector(
                       onTap: () {
-                        ref.read(selectedFontProvider.notifier).state =
-                            fontFamily;
+                        ref.read(selectedFontProvider.notifier).state = fontFamily;
                         Navigator.pop(context);
                       },
                       child: Padding(
